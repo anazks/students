@@ -1,0 +1,79 @@
+/* No CSS *//*# sourceMappingURL=main.css.map */
+/* Custom styles */
+body {
+    background-color: #f4f6f9;
+  }
+  
+  .breadcrumb {
+    background-color: transparent;
+    font-size: 1.1rem;
+  }
+  
+  .breadcrumb-item a {
+    color: #28a745;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .breadcrumb-item a:hover {
+    color: #218838;
+  }
+  
+  .alert {
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  
+  h2 {
+    font-family: 'Roboto', sans-serif;
+    color: #343a40;
+    font-weight: 600;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .row.g-4 {
+    margin-bottom: 20px;
+  }
+  
+  input, select, textarea {
+    font-size: 16px;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+  
+  button[type="submit"]:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+  }
+  

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Lab Log Report</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+      .logout-container a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.logout-container a:hover {
+  color: #ffc107;
+}
+
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #007bff;
+      padding: 10px 20px;
+      color: white;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toggle-container label {
+      font-size: 14px;
+    }
+
+    .toggle-btn {
+      appearance: none;
+      width: 40px;
+      height: 20px;
+      background-color: #ccc;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s;
+    }
+
+    .toggle-btn:checked {
+      background-color: #28a745;
+    }
+
+    .toggle-btn:checked::after {
+      left: 22px;
+    }
+
+    .toggle-btn::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-color: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: left 0.3s;
+    }
+
+    .main-container {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 80px auto 20px; /* Adjusted margin for navbar height */
+      padding: 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      background-color: #f9f9f9;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    .form-group input[disabled],
+    .form-group select[disabled],
+    .form-group textarea[disabled] {
+      background-color: #e9ecef;
+      color: #6c757d;
+      cursor: not-allowed;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th,
+    table td {
+      padding: 2px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    table td {
+      background-color: #f9f9f9;
+    }
+
+    .mark-btn {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .mark-btn:hover {
+      background-color: #218838;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+    }
+    .NameArea option{
+        border: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+ <div class="navbar">
+  <select name="" id="" class="NameArea">
+    <option value="">{{student.name}}</option>
+  </select>
+  <div class="toggle-container">
+    <label for="edit-toggle" style="color: #28a745; background-color: white;">Mark Attendance</label>
+    <input type="checkbox" id="edit-toggle" class="toggle-btn">
+  </div>
+  <div class="logout-container">
+    <a href="/student/logout" title="Logout">
+     Logout <i class="fa fa-sign-out-alt" aria-hidden="true" style="font-size: 18px; color: white; margin-left: 15px;"></i>
+    </a>
+  </div>
+</div>
+
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Form Section -->
+    <div class="container">
+      <h1>Lab Log Form</h1>
+      <form id="lab-log-form" action="/student/add-lab" method="post">
+  <!-- Attendance -->
+  <div class="form-group">
+    <label for="attendance">Mark Attendance</label>
+    <select id="attendance" name="attendance" required disabled>
+      <option value="" disabled selected>Select</option>
+      <option value="Present">Present</option>
+      <option value="Absent">Absent</option>
+    </select>
+  </div>
+
+  <!-- Lab Selection -->
+  {{!-- <div class="form-group">
+    <label for="lab">Select Lab</label>
+    <select id="lab" name="lab" required disabled>
+      <option value="" disabled selected>Select Lab</option>
+      <option value="Computer Lab">Computer Lab</option>
+      <option value="Physics Lab">Physics Lab</option>
+      <option value="Chemistry Lab">Chemistry Lab</option>
+      <option value="Biology Lab">Biology Lab</option>
+      <option value="Electronics Lab">Electronics Lab</option>
+    </select>
+  </div> --}}
+
+  <!-- Subject Selection -->
+  <div class="form-group">
+    <label for="subject">Select Subject</label>
+    <select id="subject" name="lab" required>
+      <option value="" disabled selected>Select Subject</option>
+      {{#each subjects}}
+        <option value="{{this.Subject_id}}">{{this.Subject_id}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <!-- Experiment -->
+  <div class="form-group">
+    <label for="experiment">Experiment</label>
+    <input type="text" id="experiment" name="experiment" placeholder="Enter experiment details" required disabled>
+  </div>
+
+  <!-- CO -->
+  <div class="form-group">
+    <label for="co">CO</label>
+    <input type="text" id="co" name="co" placeholder="Enter CO details" required disabled>
+  </div>
+
+  <!-- Date -->
+  <div class="form-group">
+    <label for="date">Date</label>
+    <input type="date" id="date" name="date" required disabled>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="submit-btn" disabled>Submit Log</button>
+</form>
+
+    </div>
+
+    <!-- Table Section -->
+    <div class="container">
+      <h1>Logs Overview</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Attendance</th>
+            <th>Lab</th>
+            <th>Experiment</th>
+            <th>CO</th>
+            <th>Date</th>
+            <th>Viva</th>
+            <th>Rough Record</th>
+            <th>Fair Record</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {{#if labs}}
+            {{#each labs}}
+              <tr>
+                <td>{{attendance}}</td>
+                <td>{{lab}}</td>
+                <td>{{experiment}}</td>
+                <td>{{co}}</td>
+                <td>{{date}}</td>
+                <td>
+                  {{#if mark}}
+                  <p style="color: #28a745;">  {{mark}}</p>
+                  {{else}}
+                    <button class="mark-btn">Mark</button>
+                  {{/if}}
+                </td>
+                <td>
+                  {{roughMark}}
+                </td>
+                <td>{{fairMark}}</td>
+              </tr>
+            {{/each}}
+          {{else}}
+            <tr>
+              <td colspan="6" style="text-align: center;">No logs available</td>
+            </tr>
+          {{/if}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const editToggle = document.getElementById("edit-toggle");
+    const formInputs = document.querySelectorAll("#lab-log-form input, #lab-log-form select, #lab-log-form button");
+
+   // Enable or disable form inputs based on toggle state
+editToggle.addEventListener("change", function () {
+  const isEnabled = this.checked;
+
+  // Enable or disable all form inputs
+  formInputs.forEach(input => {
+    input.disabled = !isEnabled;
+  });
+
+  // If enabled, focus the first input
+  if (isEnabled) {
+    formInputs[0].focus();
+  }
+
+  // Send attendance status to the server
+  const attendanceData = { status: isEnabled };
+
+  fetch("/Student/markAttendance", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(attendanceData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        alert("Attendance marked successfully!");
+      } else {
+        alert("Failed to mark attendance.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("An error occurred while marking attendance.");
+    });
+
+  // Check if toggle is on, then get location
+  if (isEnabled) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          // Send the location to the server
+          const locationData = { latitude, longitude };
+
+          fetch("/Student/saveLocation", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(locationData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                console.log("Location saved successfully");
+              } else {
+                console.error("Failed to save location");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        },
+        function (error) {
+          console.error("Geolocation error:", error);
+          alert("Unable to retrieve your location.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  }
+});
+
+  </script>
+</body>
+</html>

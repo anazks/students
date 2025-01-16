@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Logs with Marks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <div class="container my-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Lab Logs</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="labLogsTable" class="table table-striped table-hover table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Lab</th>
+                                <th>Experiment</th>
+                                <th>CO</th>
+                                <th>Date</th>
+                                <th>Viva Mark</th>
+                                <th>Rough Record</th>
+                                <th>Fair Record Mark</th>
+                                <th>Update</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each logs}}
+                            <tr>
+                                <td>{{this.lab}}</td>
+                                <td>{{this.experiment}}</td>
+                                <td>{{this.co}}</td>
+                                <td>{{this.date}}</td>
+                                <td>{{this.mark}}</td>
+                                <td>{{this.roughMark}}</td>
+                                <td>{{this.fairMark}}</td>
+                                <td>
+                                    <form action="/LogUpdate" method="POST">
+                                        <input type="hidden" name="id" value="{{this.id}}">
+                                        <input type="number" class="form-control mb-2" name="marks" placeholder="Enter viva Marks" required>
+                                        <input type="number" class="form-control mb-2" name="roughMark" placeholder="Enter Rough Record Mark" required>
+                                        <input type="number" class="form-control mb-2" name="fairMark" placeholder="Enter fair Record Marks" required>
+                                        <button type="submit" class="btn btn-success">Submit Marks</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Initialize the DataTable
+            $('#labLogsTable').DataTable({
+                paging: true, // Enable pagination
+                searching: true, // Enable search
+                ordering: true, // Enable sorting
+                info: true, // Show information about the table
+                lengthMenu: [5, 10, 25, 50, 100], // Pagination options
+                pageLength: 10, // Default number of rows per page
+            });
+        });
+    </script>
+</body>
+</html>

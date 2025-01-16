@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #007bff, #6c63ff);
+      color: #fff;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    .login-container h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #007bff, #6c63ff);
+      color: #fff;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background-color: #0056b3;
+      transform: scale(1.03);
+    }
+
+    .forgot-password {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .register {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .register a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .register a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 20px;
+        width: 90%;
+      }
+
+      .login-container h1 {
+        font-size: 24px;
+      }
+
+      .login-btn {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form action="/Student/Login" method="POST">
+      <div class="form-group">
+        <label for="username">Admission Number</label>
+        <input type="text" id="username" name="id" required placeholder="Enter your username">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="phone" required placeholder="Enter your password">
+      </div>
+      <button type="submit" class="login-btn">Log In</button>
+    </form>
+    <a href="#" class="forgot-password">Forgot Password?</a>
+    <div class="register">
+      Don't have an account? <a href="register.html">Sign Up</a>
+    </div>
+  </div>
+</body>
+</html>

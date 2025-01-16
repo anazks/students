@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <style>
+        body {
+            background-color: black;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 90%;
+            color: white;
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #444;
+        }
+        tr:nth-child(odd) {
+            background-color: #222;
+        }
+        tr:hover {
+            background-color: #555;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+        #search {
+            width: 100%;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attendance Data</h1>
+
+    <!-- Search Box -->
+    <input type="text" id="search" placeholder="Search for User ID, Username, or Date" onkeyup="searchTable()">
+
+    <table id="attendanceTable">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each attendance}}
+            <tr>
+                <td>{{this.userId}}</td>
+                <td>{{this.username}}</td>
+                <td>{{this.date}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <script>
+        // Function to search and filter table data
+        function searchTable() {
+            var input = document.getElementById("search");
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById("attendanceTable");
+            var tr = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < tr.length; i++) { // Start at 1 to skip header row
+                var td = tr[i].getElementsByTagName("td");
+                var matchFound = false;
+
+                for (var j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        var textValue = td[j].textContent || td[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (matchFound) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
