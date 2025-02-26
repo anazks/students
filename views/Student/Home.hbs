@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Lab Log Report</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <style>
-      .logout-container a {
+
+.logout-container a {
   text-decoration: none;
   color: white;
   display: flex;
@@ -17,22 +20,20 @@
 .logout-container a:hover {
   color: #ffc107;
 }
-
-    /* General Reset */
-    * {
+ /* General Reset */
+*{
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: Arial, sans-serif;
-    }
+}
 
-    body {
+body {
       background-color: #f4f4f9;
       margin: 0;
       padding: 0;
-    }
-
-    .navbar {
+}
+.navbar {
       width: 100%;
       position: fixed;
       top: 0;
@@ -45,14 +46,12 @@
       color: white;
       z-index: 1000;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .navbar h1 {
+}
+.navbar h1 {
       margin: 0;
       font-size: 1.5rem;
-    }
-
-    .toggle-container {
+}
+.toggle-container {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -196,7 +195,7 @@
         flex-direction: column;
       }
     }
-    .NameArea option{
+.NameArea option{
         border: none;
     }
   </style>
@@ -234,20 +233,7 @@
       <option value="Absent">Absent</option>
     </select>
   </div>
-
-  <!-- Lab Selection -->
-  {{!-- <div class="form-group">
-    <label for="lab">Select Lab</label>
-    <select id="lab" name="lab" required disabled>
-      <option value="" disabled selected>Select Lab</option>
-      <option value="Computer Lab">Computer Lab</option>
-      <option value="Physics Lab">Physics Lab</option>
-      <option value="Chemistry Lab">Chemistry Lab</option>
-      <option value="Biology Lab">Biology Lab</option>
-      <option value="Electronics Lab">Electronics Lab</option>
-    </select>
-  </div> --}}
-
+  
   <!-- Subject Selection -->
   <div class="form-group">
     <label for="subject">Select Subject</label>
@@ -255,6 +241,15 @@
       <option value="" disabled selected>Select Subject</option>
       {{#each subjects}}
         <option value="{{this.Subject_id}}">{{this.Subject_id}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="subject">Select Sem</label>
+    <select id="subject" name="sem" required>
+      <option value="" disabled selected>Select Sem</option>
+      {{#each subjects}}
+        <option value="{{this.sem}}">{{this.sem}}</option>
       {{/each}}
     </select>
   </div>
@@ -284,21 +279,21 @@
     </div>
 
     <!-- Table Section -->
-    <div class="container">
-      <h1>Logs Overview</h1>
-      <table>
+<div class="container">
+    <h1>Logs Overview</h1>
+    <table id="logsTable" class="display">
         <thead>
-          <tr>
-            <th>Attendance</th>
-            <th>Lab</th>
-            <th>Experiment</th>
-            <th>CO</th>
-            <th>Date</th>
-            <th>Viva</th>
-            <th>Rough Record</th>
-            <th>Fair Record</th>
-
-          </tr>
+            <tr>
+                <th>Attendance</th>
+                <th>Lab</th>
+                <th>Experiment</th>
+                <th>CO</th>
+                <th>Date</th>
+                <th>Sem</th>
+                <th>Viva</th>
+                <th>Rough Record</th>
+                <th>Fair Record</th>
+            </tr>
         </thead>
         <tbody>
           {{#if labs}}
@@ -309,30 +304,36 @@
                 <td>{{experiment}}</td>
                 <td>{{co}}</td>
                 <td>{{date}}</td>
+                <td>{{sem}}</td>
                 <td>
                   {{#if mark}}
-                  <p style="color: #28a745;">  {{mark}}</p>
+                    <p style="color: #28a745;">{{mark}}</p>
                   {{else}}
                     <button class="mark-btn">Mark</button>
                   {{/if}}
                 </td>
-                <td>
-                  {{roughMark}}
-                </td>
+                <td>{{roughMark}}</td>
                 <td>{{fairMark}}</td>
               </tr>
             {{/each}}
           {{else}}
             <tr>
-              <td colspan="6" style="text-align: center;">No logs available</td>
+              <td colspan="9" style="text-align: center;">No logs available</td>
             </tr>
           {{/if}}
         </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
+</div>
+
 
   <script>
+    $(document).ready(function () {
+        $('#logsTable').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true
+        });
+    });
     const editToggle = document.getElementById("edit-toggle");
     const formInputs = document.querySelectorAll("#lab-log-form input, #lab-log-form select, #lab-log-form button");
 

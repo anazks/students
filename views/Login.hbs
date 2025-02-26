@@ -123,9 +123,7 @@
 <body>
   <div class="login-container">
     <div class="login-card">
-      <button class="student-login-button" onclick="redirectToStudentLogin()">
-        <i class="fas fa-user-graduate"></i> Student Login
-      </button>
+      
       <h1 class="login-title">Teacher Login</h1>
       <p class="subtitle">Welcome to the Lab Log System</p>
       <form id="loginForm" action="/login" method="POST">
@@ -138,7 +136,9 @@
           <input type="password" id="password" name="password" placeholder="Enter your password" required>
         </div>
         <button type="submit" class="login-button">Login</button>
+        <p><a href="/student/login">Login as Student</a></p>
       </form>
+      
     </div>
   </div>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

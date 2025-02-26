@@ -8,12 +8,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
     <div class="container my-4">
         <div class="card">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h4>Lab Logs</h4>
+                <button class="btn btn-warning" onclick="generatePDF()">Download PDF</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -27,6 +30,7 @@
                                 <th>Viva Mark</th>
                                 <th>Rough Record</th>
                                 <th>Fair Record Mark</th>
+                                <th>Sem</th>
                                 <th>Update</th>
                             </tr>
                         </thead>
@@ -40,6 +44,7 @@
                                 <td>{{this.mark}}</td>
                                 <td>{{this.roughMark}}</td>
                                 <td>{{this.fairMark}}</td>
+                                <td>{{this.sem}}</td>
                                 <td>
                                     <form action="/LogUpdate" method="POST">
                                         <input type="hidden" name="id" value="{{this.id}}">
@@ -60,16 +65,57 @@
 
     <script>
         $(document).ready(function() {
-            // Initialize the DataTable
             $('#labLogsTable').DataTable({
-                paging: true, // Enable pagination
-                searching: true, // Enable search
-                ordering: true, // Enable sorting
-                info: true, // Show information about the table
-                lengthMenu: [5, 10, 25, 50, 100], // Pagination options
-                pageLength: 10, // Default number of rows per page
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true,
+                lengthMenu: [5, 10, 25, 50, 100],
+                pageLength: 10,
             });
         });
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add title
+            doc.setFontSize(18);
+            doc.text("Lab Logs Report", 14, 20);
+
+            // Extract table data excluding the last column
+            const table = document.getElementById("labLogsTable");
+            const rows = table.querySelectorAll("tbody tr");
+            const data = [];
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                const rowData = [];
+
+                for (let i = 0; i < cells.length - 1; i++) { // Exclude last column
+                    rowData.push(cells[i].textContent.trim());
+                }
+
+                data.push(rowData);
+            });
+
+            // Define headers excluding "Update" column
+            const headers = [["Lab", "Experiment", "CO", "Date", "Viva Mark", "Rough Record", "Fair Record Mark", "Sem"]];
+
+            // Generate the PDF table
+            doc.autoTable({
+                startY: 30,
+                head: headers,
+                body: data,
+                theme: "grid",
+                styles: { halign: "center", valign: "middle" },
+                headStyles: { fillColor: [40, 40, 40] },
+                alternateRowStyles: { fillColor: [240, 240, 240] },
+            });
+
+            // Save the PDF
+            doc.save("Lab_Logs.pdf");
+        }
     </script>
 </body>
 </html>

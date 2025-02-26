@@ -44,13 +44,7 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Students</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Subjects</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+            <a class="nav-link" href="/logout">Logout</a>
           </li>
         </ul>
       </div>
@@ -104,6 +98,7 @@
                 <th>Student ID</th>
                 <th>Name</th>
                 <th>Login Date</th>
+                <th>Location</th>
                 <th class="text-end">Action</th>
               </tr>
             </thead>
@@ -113,6 +108,8 @@
                   <td>{{this.userId}}</td>
                   <td>{{this.username}}</td>
                   <td>{{this.date}}</td>
+                  <td>Location</td>
+
                   <td class="text-end">
                    
                     <a href="/viewLog/{{this.userId}}" class="btn btn-info btn-sm mx-1">
@@ -253,8 +250,8 @@
                   <td>{{this.subject}}</td>
                   <td>{{this.sem}}</td>
                   <td class="text-end">
-                    <a href="/editsubject/{{this.Subject_id}}" class="btn btn-warning btn-sm mx-1"><i class="bi bi-pencil"></i> Edit</a>
-                    <a href="/deletesubject/{{this.Subject_id}}" class="btn btn-danger btn-sm mx-1"><i class="bi bi-trash"></i> Delete</a>
+                    {{!-- <a href="/editsubject/{{this.Subject_id}}" class="btn btn-warning btn-sm mx-1"><i class="bi bi-pencil"></i> Edit</a> --}}
+                    <a href="/deletesubject/{{this.id}}" class="btn btn-danger btn-sm mx-1"><i class="bi bi-trash"></i> Delete</a>
                   </td>
                 </tr>
               {{/each}}

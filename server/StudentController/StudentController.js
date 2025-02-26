@@ -65,7 +65,7 @@ const DoLogin = (req, res) => {
         }
 
         // Query the database
-        const query = 'SELECT * FROM student WHERE id = ? AND phone = ?';
+        const query = 'SELECT * FROM student WHERE id = ? AND addno = ?';
         connection.query(query, [id, phone], (err, results) => {
             if (err) {
                 console.error('Database error:', err);
@@ -90,37 +90,44 @@ const DoLogin = (req, res) => {
     }
 };
 const addLab = (req, res) => {
-    try {
-      const { attendance, lab, experiment, co, date } = req.body;
-  
+  try {
+      console.log(req.body, "---------------------------00000");
+      const { attendance, lab, sem, experiment, co, date } = req.body;
+      
       // Validate the received data
-      if (!attendance || !lab || !experiment || !co || !date) {
-        return res.status(400).json({ message: 'All fields are required' });
+      if (!attendance || !lab || !experiment || !co || !date || !sem) {
+          return res.status(400).json({ message: 'All fields are required' });
       }
-  
+      
+      // Ensure student session exists
+      if (!req.session.student || !req.session.student.id) {
+          return res.status(401).json({ message: 'Unauthorized: Student session not found' });
+      }
+
+      let { id } = req.session.student;
+      
       // Prepare the query to insert data into the lab table
       const query = `
-        INSERT INTO lab (attendance, lab, experiment, co, date,studentID)
-        VALUES (?, ?, ?, ?, ?,?)
+          INSERT INTO lab (attendance, lab, sem, experiment, co, date, studentID)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
-  
+      
       // Execute the query
-      let {id} = req.session.student
-      connection.query(query, [attendance, lab, experiment, co, date,id], (error, results) => {
-        if (error) {
-          console.error('Error inserting lab log:', error);
-          return res.status(500).json({ message: 'Error inserting lab log' });
-        }
-  
-        // Respond with success
-        // res.status(200).json({ message: 'Lab log added successfully', data: results });
-        res.redirect('/student/ome')
+      connection.query(query, [attendance, lab, sem, experiment, co, date, id], (error, results) => {
+          if (error) {
+              console.error('Error inserting lab log:', error);
+              return res.status(500).json({ message: 'Error inserting lab log' });
+          }
+          
+          // Respond with success
+          res.redirect('/student/home');
       });
-    } catch (error) {
+  } catch (error) {
       console.error('Error in /add-lab route:', error);
       res.status(500).json({ message: 'Server error' });
-    }
-  };
+  }
+};
+
 
   const getMyLab = async (req, res) => {
     try {

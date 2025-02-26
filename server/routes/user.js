@@ -11,7 +11,7 @@ router.post('/LogUpdate', userController.updateMark)
 
 router.get('/', userController.Login);
 router.post('/login', userController.login);
-
+router.post('/logout', userController.logout);
 router.get('/result', userController.views);
 router.get('/adduser', userController.form);
 router.post('/adduser', userController.create);
@@ -21,6 +21,8 @@ router.get('/edituser/:id', userController.edit);
 router.post('/edituser/:id', userController.update);
 router.get('/viewuser/:id', userController.viewall);
 router.get('/viewresult/:id', userController.viewalls);
+
+router.get('/deletesubject/:id', userController.deleteSub);
 router.get('/:id',userController.delete);
 
 router.post('/addsubject', userController.addsubject);

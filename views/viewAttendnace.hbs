@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <style>
         body {
             background-color: black;
@@ -39,12 +41,27 @@
             color: white;
         }
         #search {
-            width: 100%;
+            width: 80%;
             padding: 10px;
-            margin: 20px 0;
+            margin: 20px auto;
+            display: block;
             border-radius: 5px;
             border: 1px solid #fff;
             color: #333;
+        }
+        #downloadBtn {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        #downloadBtn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -53,6 +70,9 @@
 
     <!-- Search Box -->
     <input type="text" id="search" placeholder="Search for User ID, Username, or Date" onkeyup="searchTable()">
+    
+    <!-- PDF Download Button -->
+    <button id="downloadBtn" onclick="generatePDF()">Download PDF</button>
 
     <table id="attendanceTable">
         <thead>
@@ -101,6 +121,32 @@
                     tr[i].style.display = "none";
                 }
             }
+        }
+
+        // Function to generate PDF from table
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add title
+            doc.setFontSize(18);
+            doc.text("Attendance Report", 14, 20);
+
+            // AutoTable plugin to format table
+            doc.autoTable({
+                startY: 30,
+                html: "#attendanceTable",
+                theme: "grid",
+                styles: {
+                    halign: "center",
+                    valign: "middle",
+                },
+                headStyles: { fillColor: [40, 40, 40] }, // Dark header
+                alternateRowStyles: { fillColor: [240, 240, 240] },
+            });
+
+            // Save the PDF
+            doc.save("attendance.pdf");
         }
     </script>
 </body>

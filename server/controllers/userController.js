@@ -88,7 +88,8 @@ exports.find = (req, res) => {
 
     }
    else  if (!err) {
-      res.render('home', { rows });
+          res.redirect('/home');
+
     } else {
       console.log(err);
     }
@@ -118,13 +119,13 @@ exports.form = (req, res) => {
 
 // Add new user
 exports.create = (req, res) => {
-  const { id, name, batch, gender, department, phone, email } = req.body;
+  const { id, name, batch, gender, department, phone, email,addno } = req.body;
   let searchTerm = req.body.search;
 
 
-  connection.query('INSERT INTO student SET id = ?, name = ?, batch = ?, gender = ?, department = ?, phone = ?, email = ?', [id, name, batch, gender, department, phone, email], (err, rows) => {
+  connection.query('INSERT INTO student SET id = ?, name = ?, batch = ?, gender = ?, department = ?, phone = ?, email = ?,addno = ?', [id, name, batch, gender, department, phone, email,addno], (err, rows) => {
     if (!err) {
-      res.render('add-user', { alert: 'Student added successfully.' });
+      res.redirect('/home');
     } else {
       console.log(err);
     }
@@ -142,6 +143,9 @@ exports.forms = (req, res) => {
 
 exports.Login = (req,res)=>{
   res.render('login');
+}
+exports.logout = (req,res)=>{
+  res.redirect('/');
 }
 exports.login = (req,res)=>{
   console.log(req.body)
@@ -229,6 +233,18 @@ exports.delete = (req, res) => {
   //   }
   //   console.log('The data from student table are: \n', rows);
   // });
+}
+
+exports.deleteSub = (req, res) => {
+  console.log(req.params.id,"--id")
+  connection.query('DELETE FROM subject WHERE id = ?', [req.params.id], (err, rows) => {
+    if(!err) {
+      res.redirect('/home');
+    } else {
+      console.log(err);
+    }
+    console.log('The data from student table: \n', rows);
+  });
 }
 
 // View Users
