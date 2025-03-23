@@ -15,7 +15,7 @@ exports.view = (req, res) => {
   const today = new Date().toISOString().split('T')[0];
 
   // Query the students table
-  connection.query('SELECT * FROM student WHERE status = "active" LIMIT 5', (err, rows) => {
+  connection.query('SELECT * FROM student WHERE status = "active"', (err, rows) => {
     if (err) {
       console.log(err);
       return res.status(500).send('Error retrieving student data');
@@ -215,7 +215,7 @@ exports.delete = (req, res) => {
 
   connection.query('DELETE FROM student WHERE id = ?', [req.params.id], (err, rows) => {
     if(!err) {
-      res.redirect('/');
+      res.redirect('/home');
     } else {
       console.log(err);
     }
@@ -282,7 +282,7 @@ exports.addsubject = (req, res) => {
   connection.query('INSERT INTO subject SET Subject_id = ?, subject = ?,sem = ?', [ subject,id,sem], (err, subjects) => {
     if (!err) {
       console.log(subjects)
-      res.redirect('/');
+      res.redirect('/home');
       // res.render('home', { alert: 'Subject added successfully.' });
     } else {
       console.log(err);

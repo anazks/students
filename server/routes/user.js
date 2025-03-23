@@ -23,11 +23,15 @@ router.get('/viewuser/:id', userController.viewall);
 router.get('/viewresult/:id', userController.viewalls);
 
 router.get('/deletesubject/:id', userController.deleteSub);
-router.get('/:id',userController.delete);
+router.get('/deleteuser/:id',userController.delete);
 
 router.post('/addsubject', userController.addsubject);
 router.get('/viewLog/:id',userController.viewLog)
 
 router.get('/viewAttendance/:id',userController.getAttendnace)
 router.post('/emailAlerts',userController.emailAlerts)
+
+router.get('/logout',async(req,res)=>{
+    res.redirect('/')
+  })
 module.exports = router;

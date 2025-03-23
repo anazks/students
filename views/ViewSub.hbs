@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 90%;
+            color: white;
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #444;
+        }
+        tr:nth-child(odd) {
+            background-color: #222;
+        }
+        tr:hover {
+            background-color: #555;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+        #search {
+            width: 80%;
+            padding: 10px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            color: #333;
+        }
+        #downloadBtn {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        #downloadBtn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attendance Data</h1>
+
+    <!-- Search Box -->
+    <input type="text" id="search" placeholder="Search for Subjects" onkeyup="searchTable()">
+    
+    <!-- PDF Download Button -->
+    <button id="downloadBtn" onclick="generatePDF()">Download PDF</button>
+
+    <table id="attendanceTable">
+        <thead>
+            <tr>
+                <th>Attendance Status</th>
+                <th>lab</th>
+                <th>Date</th>
+                <th>studentID</th>
+                <th>Sem</th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            {{#each results}}
+            <tr>
+                <td>{{this.attendance}}</td>
+                <td>{{this.lab}}</td>
+                <td>{{this.date}}</td>
+                <td>{{this.studentID}}</td>
+                <td>{{this.sem}}</td>
+
+
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <script>
+        // Function to search and filter table data
+        function searchTable() {
+            var input = document.getElementById("search");
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById("attendanceTable");
+            var tr = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < tr.length; i++) { // Start at 1 to skip header row
+                var td = tr[i].getElementsByTagName("td");
+                var matchFound = false;
+
+                for (var j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        var textValue = td[j].textContent || td[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (matchFound) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+        // Function to generate PDF from table
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add title
+            doc.setFontSize(18);
+            doc.text("Attendance Report", 14, 20);
+
+            // AutoTable plugin to format table
+            doc.autoTable({
+                startY: 30,
+                html: "#attendanceTable",
+                theme: "grid",
+                styles: {
+                    halign: "center",
+                    valign: "middle",
+                },
+                headStyles: { fillColor: [40, 40, 40] }, // Dark header
+                alternateRowStyles: { fillColor: [240, 240, 240] },
+            });
+
+            // Save the PDF
+            doc.save("attendance.pdf");
+        }
+    </script>
+</body>
+</html>

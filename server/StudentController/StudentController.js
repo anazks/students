@@ -192,5 +192,29 @@ const addLab = (req, res) => {
       res.redirect("/");
     });
   };
-  
-module.exports = {getLoginPage,Home,DoLogin,addLab,getMyLab,addAttendance,logout}
+  const AttendanceView = (req,res)=>{
+    try {
+      console.log("AttendanceView")
+      const q = "SELECT * FROM lab";
+      connection.query(q,(err,results)=>{
+        if(err){
+          console.log(err)
+        }
+        console.log(results,"------------------")
+        res.render('ViewSub',{results})
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const location = async (req,res)=>{
+    try {
+      let location = await fetch('https://www.kottankulangaratemple.in/getLocation')
+      location = await location.json()
+      console.log(location)
+      res.json(location)
+    } catch (error) {
+      
+    }
+  }
+module.exports = {getLoginPage,Home,DoLogin,addLab,getMyLab,addAttendance,logout,AttendanceView,location}
